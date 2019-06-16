@@ -1,0 +1,34 @@
+@startuml
+
+top to bottom direction
+
+actor User
+
+cloud "AWS" {
+    node "LoadGeneratorNode" {
+        [Yandex.Tank:Jmeter] as [loadGenerator]
+    }
+
+    node "LoadBalancerNode" {
+        [Nginx] as [loadBalancer]
+    }
+
+    node "FrontEndNode" {
+        [ProductsManager] as [frontEnd]
+    }
+
+    node "BackEndNode" {
+        [Products] as [backEnd]
+    }
+
+    database "MySQLNode" {
+        [ProductsDB] as [dataBase]
+    }
+}
+ User -right->  [frontEnd]
+[loadGenerator] -down-> [loadBalancer]
+[loadBalancer] -down-> [backEnd]
+[frontEnd] -down-> [backEnd]
+[backEnd] -down-> [dataBase]
+
+@enduml

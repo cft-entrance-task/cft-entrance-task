@@ -1,0 +1,588 @@
+{
+	"info": {
+		"_postman_id": "e21b9521-1b05-460c-ab37-48169e147271",
+		"name": "cft_test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get all products",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3c4b2463-e699-478f-9927-e4498f8f2dd5",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Connection",
+						"value": "keep-alive"
+					},
+					{
+						"key": "Accept-Encoding",
+						"value": "gzip, deflate"
+					},
+					{
+						"key": "Referer",
+						"value": "http://35.158.102.49/product-manager/"
+					},
+					{
+						"key": "Accept-Language",
+						"value": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.90 Safari/537.36"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://{{loadbalancer}}/products-service/products_all",
+					"protocol": "http",
+					"host": [
+						"{{loadbalancer}}"
+					],
+					"path": [
+						"products-service",
+						"products_all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add root product",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "c53c594c-71e9-424b-a33b-da56fbc21e1f",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "2250028e-6d6b-4248-9e15-00b2b3d2c296",
+						"exec": [
+							"pm.environment.set('rootProductId', pm.response.json().id);",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([201,202]);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"root{{$randomInt}}\"\n}"
+				},
+				"url": {
+					"raw": "http://{{loadbalancer}}/products-service/product",
+					"protocol": "http",
+					"host": [
+						"{{loadbalancer}}"
+					],
+					"path": [
+						"products-service",
+						"product"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit root product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "010b6bb9-83ad-4900-8dd3-523955e23e62",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"root{{$randomInt}}\"\n}"
+				},
+				"url": {
+					"raw": "http://{{loadbalancer}}/products-service/product/{{rootProductId}}",
+					"protocol": "http",
+					"host": [
+						"{{loadbalancer}}"
+					],
+					"path": [
+						"products-service",
+						"product",
+						"{{rootProductId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add subRoot product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ca443a1f-9f9e-476c-a4b6-d655b9226cfd",
+						"exec": [
+							"pm.environment.set('subRootProductId', pm.response.json().id);",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([201,202]);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"parentId\": {{rootProductId}},\n    \"name\": \"subRoot{{$randomInt}}\"\n}"
+				},
+				"url": {
+					"raw": "http://{{loadbalancer}}/products-service/product",
+					"protocol": "http",
+					"host": [
+						"{{loadbalancer}}"
+					],
+					"path": [
+						"products-service",
+						"product"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit subRoot product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c73b2492-b2d3-46e1-af19-6343c3366e45",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"parentId\": {{rootProductId}},\n    \"name\": \"subRoot{{$randomInt}}\"\n}"
+				},
+				"url": {
+					"raw": "http://{{loadbalancer}}/products-service/product/{{subRootProductId}}",
+					"protocol": "http",
+					"host": [
+						"{{loadbalancer}}"
+					],
+					"path": [
+						"products-service",
+						"product",
+						"{{subRootProductId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add parameter to subRoot product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "71042fee-6f39-4d09-baee-94065b8eafbd",
+						"exec": [
+							"pm.environment.set('subRootProductParameterId', pm.response.json().id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"code\": \"sumFrom\",\n    \"value\": \"{{$randomInt}}\"\n}"
+				},
+				"url": {
+					"raw": "http://{{loadbalancer}}/products-service/add_param/{{subRootProductId}}",
+					"protocol": "http",
+					"host": [
+						"{{loadbalancer}}"
+					],
+					"path": [
+						"products-service",
+						"add_param",
+						"{{subRootProductId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit parameter of subRoot product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b089f83c-7d12-4635-9db1-5f53e54609f4",
+						"exec": [
+							"pm.environment.set('subRootProductParameterId', pm.response.json().id);",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"code\": \"sumTo\",\n    \"value\": \"{{$randomInt}}\"\n}"
+				},
+				"url": {
+					"raw": "http://{{loadbalancer}}/products-service/upd_param/{{subRootProductParameterId}}",
+					"protocol": "http",
+					"host": [
+						"{{loadbalancer}}"
+					],
+					"path": [
+						"products-service",
+						"upd_param",
+						"{{subRootProductParameterId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add string parameter",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "03c968f1-27cc-498b-93b1-4bb1dae32fe2",
+						"exec": [
+							"pm.environment.set('stringParameterCode', pm.response.json().code);",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([201,202]);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"code\": \"{{$randomInt}}\",\n    \"name\": \"test{{$randomInt}}\",\n    \"valueType\": \"string\"\n}"
+				},
+				"url": {
+					"raw": "http://{{loadbalancer}}/products-service/param_type",
+					"protocol": "http",
+					"host": [
+						"{{loadbalancer}}"
+					],
+					"path": [
+						"products-service",
+						"param_type"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete string parameter",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "23e9a9bd-99d4-4c82-bcdf-5d7e21b4622e",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://{{loadbalancer}}/products-service/param_type/{{stringParameterCode}}",
+					"protocol": "http",
+					"host": [
+						"{{loadbalancer}}"
+					],
+					"path": [
+						"products-service",
+						"param_type",
+						"{{stringParameterCode}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete parameter of subRoot product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0eb3e9b2-068b-411c-81ff-1c6875e759ac",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://{{loadbalancer}}/products-service/param/{{subRootProductParameterId}}",
+					"protocol": "http",
+					"host": [
+						"{{loadbalancer}}"
+					],
+					"path": [
+						"products-service",
+						"param",
+						"{{subRootProductParameterId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete subRoot product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "18793798-b3d0-4e05-9e1a-c7d96c9ddef4",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://{{loadbalancer}}/products-service/product/{{subRootProductId}}",
+					"protocol": "http",
+					"host": [
+						"{{loadbalancer}}"
+					],
+					"path": [
+						"products-service",
+						"product",
+						"{{subRootProductId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete root product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f9c532cc-23dd-4065-b443-9cd4d9a9c854",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://{{loadbalancer}}/products-service/product/{{rootProductId}}",
+					"protocol": "http",
+					"host": [
+						"{{loadbalancer}}"
+					],
+					"path": [
+						"products-service",
+						"product",
+						"{{rootProductId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
