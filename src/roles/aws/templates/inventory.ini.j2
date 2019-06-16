@@ -1,0 +1,8 @@
+{% for group in groups %}
+{% if groups[group] and group != 'all' %}
+[{{ group }}]
+{% for host in groups[group] %}
+{{ host }}
+{% endfor %}
+{% endif %}
+{% endfor %}

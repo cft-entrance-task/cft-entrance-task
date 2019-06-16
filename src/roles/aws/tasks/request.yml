@@ -1,0 +1,33 @@
+---
+- name: Provisioning EC2 instances
+  ec2:
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    key_name: "{{ key_name }}"
+    region: "{{ region }}"
+    image: "{{ item.value.image | default(image) }}"
+    instance_type: "{{ item.value.instance_type | default(instance_type) }}"
+    volumes: "{{ item.value.volumes }}"
+    group_id: "{{ security_group }}"
+    instance_tags:
+      ServiceName: "{{ service_name }}"
+      Role: "{{ item.key }}"
+      Name: "{{ service_name }} {{ item.key }}"
+    vpc_subnet_id: "{{ vpc_subnet_id }}"
+    assign_public_ip: yes
+    count: "{{ item.value.count | default(1) }}"
+    termination_protection: false
+    wait: true
+    state: present
+  connection: local
+  register: ec2_result
+  with_dict: "{{ stand_types[stand_type].instances }}"
+
+- name: Wait for SSH connection to instances
+  wait_for:
+    host: "{{ item.public_ip }}"
+    port: 22
+    delay: 10
+    timeout: 300
+  connection: local
+  with_items: "{{ ec2_result.results | sum(attribute='instances', start=[]) }}"

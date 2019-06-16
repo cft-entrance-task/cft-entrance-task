@@ -1,0 +1,13 @@
+---
+aws_access_key: #AWS access key
+aws_secret_key: #AWS secret key
+region: eu-central-1
+image: ami-01530098b0caa8e31
+instance_type: t2.micro
+key_name: awsTechKeyPair
+security_group: sg-eb290c8a
+vpc_id: vpc-1c9b8c77
+vpc_subnet_id: subnet-20142c6d
+tagServiceName: ''
+tagRole: ''
+tagName: '{{ tagServiceName }}_{{ tagRole }}'

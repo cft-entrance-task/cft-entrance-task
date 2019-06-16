@@ -1,0 +1,9 @@
+---
+- name: Copy start-productsmanager.sh
+  template:
+    src: start-productsmanager.sh.j2
+    dest: /tmp/start-productsmanager.sh
+    mode: 0755
+
+- name: Start productsmanager
+  shell: /tmp/start-productsmanager.sh

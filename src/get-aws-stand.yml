@@ -1,0 +1,12 @@
+- name: EC2 instances for CFT entrance task
+  become: false
+  gather_facts: true
+  hosts: localhost
+  vars:
+    service_name: "{{ lookup('env','USER') }}-cft"
+  roles:
+    - role: aws
+      action: request
+    - role: aws
+      action: describe
+

@@ -1,0 +1,3 @@
+--- # ToDo: add EC2 instances retirement tasks
+- name: Retiring EC2 instances
+  ping:

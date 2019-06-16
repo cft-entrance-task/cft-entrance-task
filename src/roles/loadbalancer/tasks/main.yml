@@ -1,0 +1,9 @@
+---
+- name: Copy start-loadbalancer.sh
+  template:
+    src: start-loadbalancer.sh.j2
+    dest: /tmp/start-loadbalancer.sh
+    mode: 0755
+
+- name: Start loadbalancer
+  shell: /tmp/start-loadbalancer.sh

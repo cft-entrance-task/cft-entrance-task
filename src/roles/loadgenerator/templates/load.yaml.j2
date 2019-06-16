@@ -1,0 +1,31 @@
+phantom:
+  enabled: false
+
+jmeter:
+  enabled: true
+  jmx: get-all-products.jmx
+  variables:
+    host: "{{ hostvars[groups['loadbalancer'][0]]['ansible_default_ipv4']['address'] }}"
+
+autostop:
+  autostop:
+    - time(2s,20s)
+    - http(5xx,100%,10s)
+    - net(xx,1,30)
+
+console:
+  enabled: true
+  short_only: true
+
+telegraf:
+  enabled: true
+  package: yandextank.plugins.Telegraf
+  config: "monitoring.xml"
+  disguise_hostnames: false
+
+overload:
+  enabled: true
+  package: yandextank.plugins.DataUploader
+  token_file: overload-token
+  job_name: "CFT entrance task"
+  job_dsc: "Test 1"

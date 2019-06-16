@@ -1,0 +1,7 @@
+- name: HL test
+  become: true
+  hosts: loadgenerator
+  tasks:
+    - name: Run HL test
+      shell: "docker run --rm --name tank --net host -v /var/loadtest:/var/loadtest -v /root/.ssh:/root/.ssh direvius/yandex-tank:jmeter-latest"
+      ignore_errors: true

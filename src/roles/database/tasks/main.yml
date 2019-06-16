@@ -1,0 +1,9 @@
+---
+- name: Copy start-productsdb.sh
+  template:
+    src: start-productsdb.sh.j2
+    dest: /tmp/start-productsdb.sh
+    mode: 0755
+
+- name: Start productsdb
+  shell: /tmp/start-productsdb.sh

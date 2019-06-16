@@ -1,0 +1,41 @@
+- name: Gather facts
+  become: true
+  hosts: all
+  gather_facts: true
+
+- name: Remove all containers
+  become: true
+  hosts: all
+  tasks:
+    - name: Remove all containers
+      shell: "docker ps -a | awk 'NR > 1 {print $1}' | xargs -I{} docker rm -f {}"
+
+- name: Deploy database service
+  become: true
+  hosts: database
+  roles:
+    - database
+
+- name: Deploy backend service
+  become: true
+  hosts: backend
+  roles:
+    - backend
+
+- name: Deploy frontend service
+  become: true
+  hosts: frontend
+  roles:
+    - frontend
+
+- name: Deploy loadbalancer
+  become: true
+  hosts: loadbalancer
+  roles:
+    - loadbalancer
+
+- name: Deploy loadgenerator
+  become: true
+  hosts: loadgenerator
+  roles:
+    - loadgenerator

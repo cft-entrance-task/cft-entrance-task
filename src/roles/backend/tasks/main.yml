@@ -1,0 +1,9 @@
+---
+- name: Copy start-products.sh
+  template:
+    src: start-products.sh.j2
+    dest: /tmp/start-products.sh
+    mode: 0755
+
+- name: Start products
+  shell: /tmp/start-products.sh

@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+IMAGE_NAME='makalex88/productsdb'
+CONTAINER_NAME='productsdb'
+
+docker rm -f ${CONTAINER_NAME}
+
+docker pull ${IMAGE_NAME}
+
+docker run -d --rm \
+    --net host \
+    -p 3306:3306 \
+    --add-host="products-manager:{{ hostvars[groups['frontend'][0]]['ansible_default_ipv4']['address'] }}" \
+    --add-host="products-service:{{ hostvars[groups['backend'][0]]['ansible_default_ipv4']['address'] }}" \
+    --add-host="products-database:{{ hostvars[groups['database'][0]]['ansible_default_ipv4']['address'] }}" \
+    --name ${CONTAINER_NAME} \
+     ${IMAGE_NAME}
+
+sleep 30

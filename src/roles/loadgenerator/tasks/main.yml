@@ -1,0 +1,29 @@
+---
+- name: Create directory for config files
+  file:
+    path: /var/loadtest
+    state: directory
+
+- name: Create monitoring.xml
+  template:
+    src: monitoring.xml.j2
+    dest: /var/loadtest/monitoring.xml
+    mode: 0644
+
+- name: Copy overload-token
+  copy:
+    src: overload-token
+    dest: /var/loadtest/overload-token
+    mode: 0644
+
+- name: Create load.yaml
+  template:
+    src: load.yaml.j2
+    dest: /var/loadtest/load.yaml
+    mode: 0644
+
+- name: Copy loadtest.jmx
+  copy:
+    src: loadtest.jmx
+    dest: /var/loadtest/loadtest.jmx
+    mode: 0644

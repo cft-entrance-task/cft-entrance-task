@@ -1,0 +1,21 @@
+---
+- name: Get EC2 instances meta
+  ec2_instance_facts:
+    region: "{{ region }}"
+    filters:
+      instance-state-name: running
+      "tag:ServiceName": "{{ service_name }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+  register: ec2_meta_info
+
+- name: Form dynamic inventory
+  add_host:
+    name: "{{ item.public_ip_address }}"
+    groups: "{{ item.tags['Role'] }}"
+  with_items: "{{ ec2_meta_info.instances }}"
+
+- name: "Form inventory file: {{ playbook_dir }}/inventory/hosts.ini"
+  template:
+    src: inventory.ini.j2
+    dest: "{{ playbook_dir }}/inventory/hosts.ini"

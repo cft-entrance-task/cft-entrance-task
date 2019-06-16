@@ -1,0 +1,52 @@
+<Monitoring>
+    <!--Loadgenerator-->
+    <Host address="{{ hostvars[groups['loadgenerator'][0]]['ansible_default_ipv4']['address'] }}" comment="Load generator" interval="1" username="root">
+        <CPU fielddrop='["time_*", "usage_guest_nice"]'></CPU>
+        <Kernel fielddrop='["active", "inactive", "total", "used_per*", "avail*"]'></Kernel>
+        <Net fielddrop='["icmp*", "ip*", "udplite*", "tcp*", "udp*", "drop*", "err*"]' interfaces='["eth0","lo"]'></Net>
+        <System fielddrop='["n_users", "n_cpus", "uptime*"]'></System>
+        <Memory fielddrop='["active", "inactive", "total", "used_per*", "avail*"]'></Memory>
+        <Disk devices='["vda","vdc", "xvda", "xvdb", "xvdc"]'></Disk>
+        <Netstat/>
+    </Host>
+    <!--Loadbalancer-->
+    <Host address="{{ hostvars[groups['loadbalancer'][0]]['ansible_default_ipv4']['address'] }}" comment="Load balancer" interval="1" username="root">
+        <CPU fielddrop='["time_*", "usage_guest_nice"]'></CPU>
+        <Kernel fielddrop='["active", "inactive", "total", "used_per*", "avail*"]'></Kernel>
+        <Net fielddrop='["icmp*", "ip*", "udplite*", "tcp*", "udp*", "drop*", "err*"]' interfaces='["eth0","lo"]'></Net>
+        <System fielddrop='["n_users", "n_cpus", "uptime*"]'></System>
+        <Memory fielddrop='["active", "inactive", "total", "used_per*", "avail*"]'></Memory>
+        <Disk devices='["vda","vdc", "xvda", "xvdb", "xvdc"]'></Disk>
+        <Netstat/>
+    </Host>
+    <!--Frontend-->
+    <Host address="{{ hostvars[groups['frontend'][0]]['ansible_default_ipv4']['address'] }}" comment="Frontend" interval="1" username="root">
+        <CPU fielddrop='["time_*", "usage_guest_nice"]'></CPU>
+        <Kernel fielddrop='["active", "inactive", "total", "used_per*", "avail*"]'></Kernel>
+        <Net fielddrop='["icmp*", "ip*", "udplite*", "tcp*", "udp*", "drop*", "err*"]' interfaces='["eth0","lo"]'></Net>
+        <System fielddrop='["n_users", "n_cpus", "uptime*"]'></System>
+        <Memory fielddrop='["active", "inactive", "total", "used_per*", "avail*"]'></Memory>
+        <Netstat />
+        <Disk devices='["vda","vdc", "xvda", "xvdb", "xvdc"]'></Disk>
+    </Host>
+    <!--Backend-->
+    <Host address="{{ hostvars[groups['backend'][0]]['ansible_default_ipv4']['address'] }}" comment="Backend" interval="1" username="root">
+        <CPU fielddrop='["time_*", "usage_guest_nice"]'></CPU>
+        <Kernel fielddrop='["active", "inactive", "total", "used_per*", "avail*"]'></Kernel>
+        <Net fielddrop='["icmp*", "ip*", "udplite*", "tcp*", "udp*", "drop*", "err*"]' interfaces='["eth0","lo"]'></Net>
+        <System fielddrop='["n_users", "n_cpus", "uptime*"]'></System>
+        <Memory fielddrop='["active", "inactive", "total", "used_per*", "avail*"]'></Memory>
+        <Disk devices='["vda","vdc", "xvda", "xvdb", "xvdc"]'></Disk>
+        <Netstat />
+    </Host>
+    <!--Database-->
+    <Host address="{{ hostvars[groups['database'][0]]['ansible_default_ipv4']['address'] }}" comment="Database" interval="1" username="root">
+        <CPU fielddrop='["time_*", "usage_guest_nice"]'></CPU>
+        <Kernel fielddrop='["active", "inactive", "total", "used_per*", "avail*"]'></Kernel>
+        <Net fielddrop='["icmp*", "ip*", "udplite*", "tcp*", "udp*", "drop*", "err*"]' interfaces='["eth0","lo"]'></Net>
+        <System fielddrop='["n_users", "n_cpus", "uptime*"]'></System>
+        <Memory fielddrop='["active", "inactive", "total", "used_per*", "avail*"]'></Memory>
+        <Disk devices='["vda","vdc", "xvda", "xvdb", "xvdc"]'></Disk>
+        <Netstat />
+    </Host>
+</Monitoring>

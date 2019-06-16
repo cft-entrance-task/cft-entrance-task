@@ -1,0 +1,39 @@
+---
+stand_types:
+  cft_entrance_task_lite:
+    instances:
+      loadgenerator:
+        instance_type: t2.small
+        count: 1
+        volumes:
+          - device_name: /dev/sda1
+            volume_size: 10
+            delete_on_termination: true
+      loadbalancer:
+        instance_type: t2.small
+        count: 1
+        volumes:
+          - device_name: /dev/sda1
+            volume_size: 10
+            delete_on_termination: true
+      frontend:
+        instance_type: t2.small
+        count: 1
+        volumes:
+          - device_name: /dev/sda1
+            volume_size: 10
+            delete_on_termination: true
+      backend:
+        instance_type: t2.small
+        count: 1
+        volumes:
+          - device_name: /dev/sda1
+            volume_size: 10
+            delete_on_termination: true
+      database:
+        instance_type: t2.small
+        count: 1
+        volumes:
+          - device_name: /dev/sda1
+            volume_size: 10
+            delete_on_termination: true
