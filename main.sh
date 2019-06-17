@@ -24,7 +24,8 @@ _installRequirements() {
 
     virtualenv .venv
     pip install -r requirements.txt
-    echo '_installRequirements'
+
+    chmod 0600 credentials/ssh-keys/awsTechKeyPair
 }
 
 _getStand() {
